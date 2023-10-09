@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  myapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - SECRET_KEY=insecure-t_^p_ilh%2+9i%_o+de-5a0dg$sth8zqtq#yl4eq@!j_%=-4p$
+      - DEBUG=true
+      - DATABASE_URL=postgres://efit:Tech2023db@34.67.50.41/gambling
+      - DJANGO_ENVIRONMENT=production
+      - GOOGLE_APPLICATION_CREDENTIALS=/gambling/api/api/credentials/credentials.json
+      - PYTHONPATH=/gambling/api/api/:/gambling/api/:/gambling/
+    volumes:
+      - .:/gambling/
+    command: uwsgi --http :8080 --module api.wsgi
