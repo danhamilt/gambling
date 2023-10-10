@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'corsheaders',
     'storages',
+    'apps.nhl',
 ]
 
 MIDDLEWARE = [

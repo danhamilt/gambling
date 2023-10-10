@@ -3,4 +3,4 @@ from django.apps import AppConfig
 
 class NhlConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "nhl"
+    name = "apps.nhl"
