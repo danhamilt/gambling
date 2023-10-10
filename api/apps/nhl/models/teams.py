@@ -1,5 +1,5 @@
 from django.db import models
-
+from geopy.geocoders import Nominatim
     
 # Create DivisionSeason model
 class Team(models.Model):
@@ -26,7 +26,7 @@ class Team(models.Model):
         return self.name
     class Meta:
         unique_together = ('id', 'season')
-        
+
 class Franchise(models.Model):
     franchise_id = models.IntegerField(primary_key=True)
     team_name = models.CharField(max_length=100)
@@ -52,12 +52,24 @@ class Division(models.Model):
         return self.name
     
 class Venue(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     link = models.CharField(max_length=100)
     city = models.CharField(max_length=100)
     timezone_id = models.CharField(max_length=100)
     timezone_offset = models.IntegerField()
     timezone_tz = models.CharField(max_length=100)
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
 
     def __str__(self):
         return self.name
+
+
+    def save(self, *args, **kwargs):
+        if not self.latitude or not self.longitude:
+            geolocator = Nominatim(user_agent='myapp')
+            location = geolocator.geocode(self.city)
+            if location:
+                self.latitude = location.latitude
+                self.longitude = location.longitude
+        super().save(*args, **kwargs)

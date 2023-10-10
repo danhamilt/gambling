@@ -16,3 +16,20 @@ def download_url(url: str) -> Union[str, dict]:
     with suppress(requests.JSONDecodeError):
             return r.json()
     return r.text
+
+from math import radians, sin, cos, sqrt, atan2
+
+def haversine_distance(lat1, lon1, lat2, lon2):
+    # Convert latitude and longitude to radians
+    lat1, lon1, lat2, lon2 = map(radians, [lat1, lon1, lat2, lon2])
+
+    # Calculate the differences between the latitudes and longitudes
+    dlat = lat2 - lat1
+    dlon = lon2 - lon1
+
+    # Calculate the great-circle distance using the Haversine formula
+    a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
+    c = 2 * atan2(sqrt(a), sqrt(1-a))
+    distance = 6371 * c  # Earth's radius in kilometers
+
+    return distance
