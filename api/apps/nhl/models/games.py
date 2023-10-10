@@ -3,7 +3,6 @@ import datetime
 from django.db import models
 from apps.nhl.utilities import download_url
 from apps.nhl.constants import BASE_API_URL
-from apps.nhl.models import Team, Venue, Division, Conference, Franchise
 
 class Game(models.Model):
     game_id = models.IntegerField(unique=True)
@@ -13,6 +12,8 @@ class Game(models.Model):
     game_date = models.DateTimeField()
     home_team = models.ForeignKey('Team', on_delete=models.CASCADE, related_name='home_team')
     away_team = models.ForeignKey('Team', on_delete=models.CASCADE, related_name='away_team')
+    completed = models.BooleanField(default=False)
+    live = models.BooleanField(default=False)
     class Meta:
         ordering = ['-game_date']
 
@@ -97,7 +98,23 @@ class Season(models.Model):
         url = f'{BASE_API_URL}teams?expand=team.roster&season={self.get_nhl_season()}'
         return_json = download_url(url)
         for dt in dates:
-               game_date = datetime.strptime(dt, '%Y-%m-%d')
+            game_date = datetime.strptime(dt, '%Y-%m-%d')
+            for game in dt['games']:
+                home_team = Team.objects.get(id=game['teams']['home']['team']['id'])
+                away_team = Team.objects.get(id=game['teams']['away']['team']['id'])
+                Game.objects.get_or_create(
+                    game_id=game['gamePk'],
+                    kwargs={
+                        'link': game['link'],
+                        'game_type': game['gameType'],
+                        'season': self,
+                        'game_date': game_date,
+                        'home_team': home_team,
+                        'away_team': away_team,
+                        'completed': game['status']['detailedState'] == 'Final',
+                    }
+                )
+
 
 
     def save(self, *args, **kwargs):
