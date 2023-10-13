@@ -170,7 +170,7 @@ class Season(models.Model):
         url = f'{BASE_API_URL}teams?expand=team.roster&season={self.get_nhl_season()}'
         return_json = download_url(url)
         previous_game = {}
-        for dt in dates:
+        for dt in return_json['dates']:
             game_date = datetime.strptime(dt, '%Y-%m-%d')
             for game in dt['games']:
                 venue = Venue.objects.get(id=game['venue']['id'])

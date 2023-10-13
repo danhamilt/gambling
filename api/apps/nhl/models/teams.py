@@ -60,7 +60,7 @@ class Venue(models.Model):
     timezone_tz = models.CharField(max_length=100)
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
-
+    altitude = models.FloatField(null=True, blank=True)
     def __str__(self):
         return self.name
 
@@ -68,8 +68,9 @@ class Venue(models.Model):
     def save(self, *args, **kwargs):
         if not self.latitude or not self.longitude:
             geolocator = Nominatim(user_agent='myapp')
-            location = geolocator.geocode(self.city)
+            location = geolocator.geocode(f'{self.name}, {self.city}')
             if location:
                 self.latitude = location.latitude
                 self.longitude = location.longitude
+                self.altitude = location.altitude
         super().save(*args, **kwargs)

@@ -22,6 +22,15 @@ def download_teams():
     with open('/Users/danham/gambling/api/apps/nhl/fixtures/teams_example.json', 'w') as f:
         json.dump(data, f)
 
+def download_rosters():
+    import requests
+    import json
+    url = "https://statsapi.web.nhl.com/api/v1/teams/1/roster"
+    response = requests.get(url)
+    data = response.json()
+    with open('/Users/danham/gambling/api/apps/nhl/fixtures/rosters_example.json', 'w') as f:
+        json.dump(data, f)
+'
 
 def create_seasons():
     from apps.nhl.constants import CURRENT_SEASON, BEGINNING_SEASON
