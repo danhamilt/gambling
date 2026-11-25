@@ -52,7 +52,7 @@ grpcio==1.59.0
 grpcio-status==1.59.0
 gunicorn==21.2.0
 h11==0.14.0
-httplib2==0.22.0
+httplib2==0.32.0
 idna==3.4
 inflection==0.5.1
 itypes==1.2.0
