@@ -51,7 +51,7 @@ grpc-google-iam-v1==0.12.6
 grpcio==1.59.0
 grpcio-status==1.59.0
 gunicorn==21.2.0
-h11==0.14.0
+h11==0.16.0
 httplib2==0.22.0
 idna==3.4
 inflection==0.5.1
