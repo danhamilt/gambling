@@ -77,7 +77,7 @@ pydantic_core==2.10.1
 pyflakes==3.1.0
 PyJWT==2.15.0
 pyparsing==3.1.1
-python-dotenv==1.0.0
+python-dotenv==1.2.2
 python-jose==3.3.0
 pytz==2023.3.post1
 PyVimeo==1.1.0
